@@ -339,6 +339,49 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Footer / Button */
+.app-footer {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.reset-btn {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    padding: 12px 28px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: var(--transition);
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    transform: translateY(-2px);
+}
+
+.reset-btn:active {
+    transform: translateY(1px);
+}
+
+.reset-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
 /* Responsive adjustment */
 @media (max-width: 480px) {
     body { padding: 0.5rem; }
