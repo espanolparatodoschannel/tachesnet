@@ -206,7 +206,7 @@ body {
     width: 20px;
     height: 20px;
     transition: transform 0.3s ease;
-    fill: white;
+    fill: currentColor;
 }
 
 .task-group.open .chevron {
