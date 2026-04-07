@@ -241,11 +241,26 @@ body {
 
 .task-group.all-done {
     border-color: var(--success);
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
 }
 
 .task-group.all-done .group-header {
     border-left-color: var(--success) !important;
+}
+
+/* Badge de Completado */
+.done-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    animation: fadeIn 0.5s ease;
 }
 
 /* Piso Badge */

@@ -125,10 +125,15 @@ function renderApp() {
         const header = document.createElement('div');
         header.className = `group-header group-${block.color}`;
         
+        const doneBadge = isAllDone ? `<span class="done-badge">COMPLETADO</span>` : '';
+        
         header.innerHTML = `
             <div class="header-left">
                 ${dragIcon}
-                <span onclick="toggleGroup('${block.uniqueId || block.id}')">${block.title} (${completedInBlock}/${block.tasks.length})</span>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <span onclick="toggleGroup('${block.uniqueId || block.id}')">${block.title} (${completedInBlock}/${block.tasks.length})</span>
+                    ${doneBadge}
+                </div>
             </div>
             <svg class="chevron" onclick="toggleGroup('${block.uniqueId || block.id}')" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
         `;
