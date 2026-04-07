@@ -10,7 +10,8 @@ const structuredBlocks = [
         "RC,Plancher et les tapis",
         "RC,Plancher et les tapis au Hotêl Escad",
         "SS1,Plancher (seulement hacer los contours con la moppe). - Sall d'eau",
-        "SS2,Plancher"
+        "SS2,Plancher",
+        "SS1,Plancher avec la zamboni"
     ]},
     { title: "Banque National", color: "red", tasksRaw: [
         "SS2,Plancher",
@@ -71,17 +72,24 @@ function initData() {
     
     if (saved) {
         blocksData = JSON.parse(saved);
-        // Actualizar títulos si el usuario cambió el orden o el contenido
+        // Sincronizar tareas nuevas si el usuario agregó una tarea en el código
         blocksData.forEach((block, index) => {
-            // Buscamos si existe una sugerencia de título equivalente en structuredBlocks original por si el usuario reordenó
-            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0] === block.tasksRaw[0]);
-            if (originalRef) {
-                block.title = originalRef.title;
+            const originalRef = structuredBlocks.find(b => b.title === block.title);
+            if (originalRef && originalRef.tasksRaw.length > block.tasks.length) {
+                // Agregar las tareas faltantes
+                for (let i = block.tasks.length; i < originalRef.tasksRaw.length; i++) {
+                    const raw = originalRef.tasksRaw[i];
+                    const firstComma = raw.indexOf(',');
+                    const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
+                    block.tasks.push({
+                        id: `${originalRef.title.toLowerCase()}-${i}`,
+                        floor: raw.substring(0, firstComma).trim(),
+                        text: pureText,
+                        originalRaw: raw,
+                        completed: false
+                    });
+                }
             }
-            // Limpieza de texto de emergencia si no se hizo antes
-            block.tasks.forEach(task => {
-                task.text = task.text.replace(/-\s*Sall d'eau/gi, "").trim();
-            });
         });
     } else {
         blocksData = structuredBlocks.map((block, bIndex) => ({
