@@ -165,7 +165,7 @@ function renderApp() {
         if (isAllDone) {
             const completionBanner = document.createElement('div');
             completionBanner.className = 'completion-banner';
-            completionBanner.innerHTML = `✓ SECTOR COMPLETADO`;
+            completionBanner.innerHTML = `✓ Zone terminée`;
             groupDiv.appendChild(completionBanner);
         }
         
