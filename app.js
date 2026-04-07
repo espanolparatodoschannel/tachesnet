@@ -124,6 +124,14 @@ function renderApp() {
         
         const header = document.createElement('div');
         header.className = `group-header group-${block.color}`;
+        header.style.cursor = 'pointer';
+        
+        // Manejador de click para todo el encabezado
+        header.onclick = (e) => {
+            // Si el click es en el handle de arrastre, no expandir
+            if (e.target.closest('.drag-handle')) return;
+            toggleGroup(block.uniqueId || block.id);
+        };
         
         const doneBadge = isAllDone ? `<span class="done-badge">COMPLETADO</span>` : '';
         
@@ -131,11 +139,11 @@ function renderApp() {
             <div class="header-left">
                 ${dragIcon}
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                    <span onclick="toggleGroup('${block.uniqueId || block.id}')">${block.title} (${completedInBlock}/${block.tasks.length})</span>
+                    <span>${block.title} (${completedInBlock}/${block.tasks.length})</span>
                     ${doneBadge}
                 </div>
             </div>
-            <svg class="chevron" onclick="toggleGroup('${block.uniqueId || block.id}')" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
+            <svg class="chevron" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
         `;
         
         const content = document.createElement('div');
