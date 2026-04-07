@@ -131,8 +131,27 @@ body {
     margin-bottom: 0.8rem;
     border-radius: var(--card-radius);
     overflow: hidden;
-    transition: var(--transition);
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.2s ease;
     border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Animaciones de Arrastre (SortableJS) */
+.sortable-ghost {
+    opacity: 0.2;
+    background: var(--bg-dark) !important;
+}
+
+.sortable-chosen {
+    border: 1px solid var(--primary) !important;
+    background: rgba(92, 103, 242, 0.1) !important;
+}
+
+.sortable-drag {
+    opacity: 0.95;
+    transform: rotate(2deg) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+    z-index: 1000 !important;
 }
 
 .group-header {
