@@ -136,7 +136,7 @@ body {
 
 .group-header {
     padding: 1.2rem;
-    cursor: pointer;
+    cursor: default;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -145,8 +145,38 @@ body {
     transition: var(--transition);
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.header-left span {
+    cursor: pointer;
+}
+
+.drag-handle {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-muted);
+    cursor: grab;
+    opacity: 0.6;
+    transition: var(--transition);
+    padding: 2px;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+    fill: var(--text-main);
+}
+
 .group-header:hover {
-    filter: brightness(1.2);
+    filter: brightness(1.1);
 }
 
 .group-header .chevron {

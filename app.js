@@ -20,7 +20,7 @@ const structuredBlocks = [
     { title: "Corridors & Zamboni", color: "yellow", tasksRaw: [
         "SS2,Plancher",
         "SS1,Plancher",
-        "RC,Plancher et les tapis (faire les dos corridors). - Sall d'eau",
+        "RC,Plancher et les tapis (faire los dos corridors). - Sall d'eau",
         "2,Plancher (seulement faire los contours). - Sall d'eau",
         "2,Plancher (zamboni au jaune RC).",
         "RC,Nettoyer et ranger la zamboni"
@@ -62,8 +62,9 @@ const resetBtn = document.getElementById('resetBtn');
 
 let blocksData = [];
 
-// Icono SVG más moderno para Sall d'eau
+// Iconos SVG
 const waterIcon = `<span class="icon-water"><svg viewBox="0 0 24 24"><path d="M12,2.1L12.18,2.26L19,8.5C20.6,10.05 21.5,12.15 21.5,14.5A9.5,9.5 0 0,1 12,24A9.5,9.5 0 0,1 2.5,14.5C2.5,12.15 3.4,10.05 5,8.5L11.82,2.26L12,2.1M12,4.81L7.07,9.27C5.82,10.4 5.12,11.96 5.12,13.62C5.12,17.41 8.21,20.5 12,20.5C15.79,20.5 18.88,17.41 18.88,13.62C18.88,11.96 18.18,10.4 16.93,9.27L12,4.81Z" /></svg></span>`;
+const dragIcon = `<svg class="drag-handle" viewBox="0 0 24 24"><path d="M7,19V17H9V19H7M11,19V17H13V19H11M15,19V17H17V19H15M7,15V13H9V15H7M11,15V13H13V15H11M15,15V13H17V15H15M7,11V9H9V11H7M11,11V9H13V11H11M15,11V9H17V11H15M7,7V5H9V7H7M11,7V5H13V7H11M15,7V5H17V7H15Z" /></svg>`;
 
 function initData() {
     const saved = localStorage.getItem('building_tasks_blocks');
@@ -73,8 +74,9 @@ function initData() {
     } else {
         blocksData = structuredBlocks.map((block, bIndex) => ({
             ...block,
+            uniqueId: `block-${Date.now()}-${bIndex}`,
             id: bIndex,
-            isOpen: bIndex === 0, // El primero abierto por defecto
+            isOpen: bIndex === 0,
             tasks: block.tasksRaw.map((raw, tIndex) => {
                 const firstComma = raw.indexOf(',');
                 return {
@@ -89,6 +91,7 @@ function initData() {
     }
     
     renderApp();
+    initSortable();
     updateProgress();
 }
 
@@ -102,15 +105,19 @@ function renderApp() {
     blocksData.forEach(block => {
         const groupDiv = document.createElement('div');
         groupDiv.className = `task-group ${block.isOpen ? 'open' : ''}`;
+        groupDiv.setAttribute('data-id', block.uniqueId || block.id);
         
         const header = document.createElement('div');
         header.className = `group-header group-${block.color}`;
-        header.onclick = () => toggleGroup(block.id);
         
         const completedInBlock = block.tasks.filter(t => t.completed).length;
+        
         header.innerHTML = `
-            <span>${block.title} (${completedInBlock}/${block.tasks.length})</span>
-            <svg class="chevron" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
+            <div class="header-left">
+                ${dragIcon}
+                <span onclick="toggleGroup('${block.uniqueId || block.id}')">${block.title} (${completedInBlock}/${block.tasks.length})</span>
+            </div>
+            <svg class="chevron" onclick="toggleGroup('${block.uniqueId || block.id}')" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
         `;
         
         const content = document.createElement('div');
@@ -142,8 +149,25 @@ function renderApp() {
     });
 }
 
-function toggleGroup(blockId) {
-    const block = blocksData.find(b => b.id === blockId);
+function initSortable() {
+    Sortable.create(tasksListEl, {
+        animation: 150,
+        handle: '.drag-handle',
+        onEnd: function() {
+            const newOrder = Array.from(tasksListEl.children).map(child => child.getAttribute('data-id'));
+            const reorderedData = [];
+            newOrder.forEach(id => {
+                const found = blocksData.find(b => (b.uniqueId || b.id).toString() === id.toString());
+                if (found) reorderedData.push(found);
+            });
+            blocksData = reorderedData;
+            saveToLocal();
+        }
+    });
+}
+
+window.toggleGroup = function(blockId) {
+    const block = blocksData.find(b => (b.uniqueId || b.id).toString() === blockId.toString());
     if (block) {
         block.isOpen = !block.isOpen;
         renderApp();
@@ -165,12 +189,10 @@ window.toggleTask = function(taskId) {
 function updateProgress() {
     let completed = 0;
     let total = 0;
-    
     blocksData.forEach(block => {
         total += block.tasks.length;
         completed += block.tasks.filter(t => t.completed).length;
     });
-
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
     progressBarEl.style.width = `${percentage}%`;
     progressTextEl.innerText = `${percentage}% completado (${completed}/${total})`;
