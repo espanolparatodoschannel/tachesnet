@@ -17,7 +17,7 @@ const structuredBlocks = [
         "SS1,Plancher",
         "RC,Plancher et les tapis - Sall d'eau"
     ]},
-    { title: "Corridors & Zamboni", color: "yellow", tasksRaw: [
+    { title: "Jaune", color: "yellow", tasksRaw: [
         "SS2,Plancher",
         "SS1,Plancher",
         "RC,Plancher et les tapis (faire los dos corridors). - Sall d'eau",
@@ -46,7 +46,7 @@ const structuredBlocks = [
         "SS1,Plancher Jean-Coutu",
         "RC,Plancher et les tapis Jean-Coutu"
     ]},
-    { title: "Huston (Sall d'eau)", color: "grey", tasksRaw: [
+    { title: "Huston", color: "grey", tasksRaw: [
         "RC,Plancher et les tapis du Huston. - Sall d'eau"
     ]},
     { title: "Apple et Pottery Barn", color: "blue", tasksRaw: [
