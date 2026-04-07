@@ -265,6 +265,32 @@ body {
     animation: fadeIn 0.5s ease;
 }
 
+.check-all-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: white;
+}
+
+.check-all-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ffffff;
+    transform: scale(1.1);
+}
+
+.check-all-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
 /* Piso Badge */
 .floor-badge {
     background: rgba(255, 255, 255, 0.1);

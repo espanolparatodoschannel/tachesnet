@@ -66,6 +66,7 @@ let blocksData = [];
 // Iconos SVG
 const waterIcon = `<span class="icon-water"><svg viewBox="0 0 24 24"><path d="M12,2.1L12.18,2.26L19,8.5C20.6,10.05 21.5,12.15 21.5,14.5A9.5,9.5 0 0,1 12,24A9.5,9.5 0 0,1 2.5,14.5C2.5,12.15 3.4,10.05 5,8.5L11.82,2.26L12,2.1M12,4.81L7.07,9.27C5.82,10.4 5.12,11.96 5.12,13.62C5.12,17.41 8.21,20.5 12,20.5C15.79,20.5 18.88,17.41 18.88,13.62C18.88,11.96 18.18,10.4 16.93,9.27L12,4.81Z" /></svg></span>`;
 const dragIcon = `<svg class="drag-handle" viewBox="0 0 24 24"><path d="M7,19V17H9V19H7M11,19V17H13V19H11M15,19V17H17V19H15M7,15V13H9V15H7M11,15V13H13V15H11M15,15V13H17V15H15M7,11V9H9V11H7M11,11V9H13V11H11M15,11V9H17V11H15M7,7V5H9V7H7M11,7V5H13V7H11M15,7V5H17V7H15Z" /></svg>`;
+const doubleCheckIcon = `<svg viewBox="0 0 24 24"><path d="M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z" /></svg>`;
 
 function initData() {
     const saved = localStorage.getItem('building_tasks_blocks');
@@ -126,14 +127,18 @@ function renderApp() {
         header.className = `group-header group-${block.color}`;
         header.style.cursor = 'pointer';
         
-        // Manejador de click para todo el encabezado
         header.onclick = (e) => {
-            // Si el click es en el handle de arrastre, no expandir
-            if (e.target.closest('.drag-handle')) return;
+            // No togglar si es click en drag-handle o en check-all-btn
+            if (e.target.closest('.drag-handle') || e.target.closest('.check-all-btn')) return;
             toggleGroup(block.uniqueId || block.id);
         };
         
         const doneBadge = isAllDone ? `<span class="done-badge">COMPLETADO</span>` : '';
+        const checkAllBtn = !isAllDone ? `
+            <button class="check-all-btn" onclick="completeGroup(event, '${block.uniqueId || block.id}')" title="Marcar todo el bloque">
+                ${doubleCheckIcon}
+            </button>
+        ` : '';
         
         header.innerHTML = `
             <div class="header-left">
@@ -143,7 +148,10 @@ function renderApp() {
                     ${doneBadge}
                 </div>
             </div>
-            <svg class="chevron" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                ${checkAllBtn}
+                <svg class="chevron" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
+            </div>
         `;
         
         const content = document.createElement('div');
@@ -198,6 +206,17 @@ window.toggleGroup = function(blockId) {
     if (block) {
         block.isOpen = !block.isOpen;
         renderApp();
+    }
+}
+
+window.completeGroup = function(event, blockId) {
+    event.stopPropagation();
+    const block = blocksData.find(b => (b.uniqueId || b.id).toString() === blockId.toString());
+    if (block) {
+        block.tasks.forEach(t => t.completed = true);
+        saveToLocal();
+        renderApp();
+        updateProgress();
     }
 }
 
