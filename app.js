@@ -73,7 +73,6 @@ function initData() {
     
     if (saved) {
         blocksData = JSON.parse(saved);
-        // Actualizar títulos si el usuario cambió el orden o el contenido
         blocksData.forEach((block, index) => {
             const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0] === block.tasksRaw[0]);
             if (originalRef) {
@@ -120,7 +119,7 @@ function renderApp() {
         const isAllDone = completedInBlock === block.tasks.length && block.tasks.length > 0;
         
         const groupDiv = document.createElement('div');
-        groupDiv.className = `task-group ${block.isOpen ? 'open' : ''} ${isAllDone ? 'all-done' : ''}`;
+        groupDiv.className = `task-group ${block.isOpen ? 'open' : ''}`;
         groupDiv.setAttribute('data-id', block.uniqueId || block.id);
         
         const header = document.createElement('div');
@@ -128,12 +127,10 @@ function renderApp() {
         header.style.cursor = 'pointer';
         
         header.onclick = (e) => {
-            // No togglar si es click en drag-handle o en check-all-btn
             if (e.target.closest('.drag-handle') || e.target.closest('.check-all-btn')) return;
             toggleGroup(block.uniqueId || block.id);
         };
         
-        const doneBadge = isAllDone ? `<span class="done-badge">COMPLETADO</span>` : '';
         const checkAllBtn = !isAllDone ? `
             <button class="check-all-btn" onclick="completeGroup(event, '${block.uniqueId || block.id}')" title="Marcar todo el bloque">
                 ${doubleCheckIcon}
@@ -145,7 +142,6 @@ function renderApp() {
                 ${dragIcon}
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                     <span>${block.title} (${completedInBlock}/${block.tasks.length})</span>
-                    ${doneBadge}
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -153,6 +149,16 @@ function renderApp() {
                 <svg class="chevron" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z" /></svg>
             </div>
         `;
+        
+        groupDiv.appendChild(header);
+
+        // Agregado del banner de completado debajo del encabezado
+        if (isAllDone) {
+            const completionBanner = document.createElement('div');
+            completionBanner.className = 'completion-banner';
+            completionBanner.innerHTML = `✓ SECTOR COMPLETADO`;
+            groupDiv.appendChild(completionBanner);
+        }
         
         const content = document.createElement('div');
         content.className = 'group-content';
@@ -178,7 +184,6 @@ function renderApp() {
             content.appendChild(item);
         });
         
-        groupDiv.appendChild(header);
         groupDiv.appendChild(content);
         tasksListEl.appendChild(groupDiv);
     });

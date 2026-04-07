@@ -242,19 +242,22 @@ body {
 }
 
 
-/* Badge de Completado */
-.done-badge {
-    background: rgba(16, 185, 129, 0.2);
+/* Banner de Completado (Debajo del encabezado) */
+.completion-banner {
+    background: rgba(16, 185, 129, 0.15);
     color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.5);
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 0.65rem;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 0.8rem;
     font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
-    animation: fadeIn 0.5s ease;
+    letter-spacing: 2px;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .check-all-btn {
