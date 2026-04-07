@@ -1,18 +1,18 @@
 const structuredBlocks = [
-    { title: "Clinique & Étages", color: "grey", tasksRaw: [
+    { title: "Clinique", color: "grey", tasksRaw: [
         "RC,Plancher et les tapis de la clinique RC.",
         "2,Plancher de la clinique - Sall d'eau",
         "3,Plancher de la clinique",
         "4,Plancher de la clinique",
         "5,Plancher de la clinique"
     ]},
-    { title: "Hôtel Escad & SS", color: "blue", tasksRaw: [
+    { title: "Hôtel Escad", color: "blue", tasksRaw: [
         "RC,Plancher et les tapis",
         "RC,Plancher et les tapis au Hotêl Escad",
-        "SS1,Plancher (seulement faire les contours avec la moppe). - Sall d'eau",
+        "SS1,Plancher (seulement hacer los contours con la moppe). - Sall d'eau",
         "SS2,Plancher"
     ]},
-    { title: "Sous-sol & Lavabo", color: "red", tasksRaw: [
+    { title: "Banque National", color: "red", tasksRaw: [
         "SS2,Plancher",
         "SS1,Plancher",
         "RC,Plancher et les tapis - Sall d'eau"
@@ -21,7 +21,7 @@ const structuredBlocks = [
         "SS2,Plancher",
         "SS1,Plancher",
         "RC,Plancher et les tapis (faire los dos corridors). - Sall d'eau",
-        "2,Plancher (seulement faire los contours). - Sall d'eau",
+        "2,Plancher (seulement hacer los contours). - Sall d'eau",
         "2,Plancher (zamboni au jaune RC).",
         "RC,Nettoyer et ranger la zamboni"
     ]},
@@ -49,7 +49,7 @@ const structuredBlocks = [
     { title: "Huston (Sall d'eau)", color: "grey", tasksRaw: [
         "RC,Plancher et les tapis du Huston. - Sall d'eau"
     ]},
-    { title: "Zamboni & Apple", color: "blue", tasksRaw: [
+    { title: "Apple et Pottery Barn", color: "blue", tasksRaw: [
         "RC,Nettoyer et ranger la zamboni - Sall d'eau",
         "RC,Plancher corridor (Apple et Pottery Barn) - Sall d'eau"
     ]}
@@ -71,6 +71,18 @@ function initData() {
     
     if (saved) {
         blocksData = JSON.parse(saved);
+        // Actualizar títulos si el usuario cambió el orden o el contenido
+        blocksData.forEach((block, index) => {
+            // Buscamos si existe una sugerencia de título equivalente en structuredBlocks original por si el usuario reordenó
+            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0] === block.tasksRaw[0]);
+            if (originalRef) {
+                block.title = originalRef.title;
+            }
+            // Limpieza de texto de emergencia si no se hizo antes
+            block.tasks.forEach(task => {
+                task.text = task.text.replace(/-\s*Sall d'eau/gi, "").trim();
+            });
+        });
     } else {
         blocksData = structuredBlocks.map((block, bIndex) => ({
             ...block,
@@ -79,17 +91,18 @@ function initData() {
             isOpen: bIndex === 0,
             tasks: block.tasksRaw.map((raw, tIndex) => {
                 const firstComma = raw.indexOf(',');
+                const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
                 return {
                     id: `${bIndex}-${tIndex}`,
                     floor: raw.substring(0, firstComma).trim(),
-                    text: raw.substring(firstComma + 1).trim(),
+                    text: pureText,
+                    originalRaw: raw,
                     completed: false
                 };
             })
         }));
-        saveToLocal();
     }
-    
+    saveToLocal();
     renderApp();
     initSortable();
     updateProgress();
@@ -103,14 +116,15 @@ function renderApp() {
     tasksListEl.innerHTML = '';
     
     blocksData.forEach(block => {
+        const completedInBlock = block.tasks.filter(t => t.completed).length;
+        const isAllDone = completedInBlock === block.tasks.length && block.tasks.length > 0;
+        
         const groupDiv = document.createElement('div');
-        groupDiv.className = `task-group ${block.isOpen ? 'open' : ''}`;
+        groupDiv.className = `task-group ${block.isOpen ? 'open' : ''} ${isAllDone ? 'all-done' : ''}`;
         groupDiv.setAttribute('data-id', block.uniqueId || block.id);
         
         const header = document.createElement('div');
         header.className = `group-header group-${block.color}`;
-        
-        const completedInBlock = block.tasks.filter(t => t.completed).length;
         
         header.innerHTML = `
             <div class="header-left">
@@ -127,16 +141,17 @@ function renderApp() {
             const item = document.createElement('div');
             item.className = `task-item ${task.completed ? 'completed' : ''}`;
             
-            const hasWater = task.text.toLowerCase().includes("sall d'eau");
+            const wasSallDEau = task.originalRaw ? task.originalRaw.toLowerCase().includes("sall d'eau") : false;
             
             item.innerHTML = `
                 <div class="check-btn" onclick="toggleTask('${task.id}')">
                     <i></i>
                 </div>
                 <div class="task-info">
-                    <div class="task-text">
-                        <strong>${task.floor}:</strong> ${task.text} 
-                        ${hasWater ? waterIcon : ''}
+                    <div class="task-text" style="display: flex; align-items: center; gap: 10px;">
+                        <span class="floor-badge">${task.floor}</span> 
+                        <span class="task-description">${task.text}</span>
+                        ${wasSallDEau ? waterIcon : ''}
                     </div>
                 </div>
             `;

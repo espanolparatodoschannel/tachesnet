@@ -239,6 +239,33 @@ body {
     text-decoration: line-through;
 }
 
+.task-group.all-done {
+    border-color: var(--success);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+}
+
+.task-group.all-done .group-header {
+    border-left-color: var(--success) !important;
+}
+
+/* Piso Badge */
+.floor-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+}
+
+.task-description {
+    flex-grow: 1;
+}
+
 /* Icono de Agua (Badge Style) */
 .icon-water {
     background: rgba(56, 189, 248, 0.15);
