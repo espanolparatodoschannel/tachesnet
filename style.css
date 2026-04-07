@@ -136,13 +136,13 @@ body {
 }
 
 .group-header {
-    padding: 1.2rem;
+    padding: 1.4rem 1.2rem;
     cursor: default;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.15rem;
     transition: var(--transition);
 }
 
