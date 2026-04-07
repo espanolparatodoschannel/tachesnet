@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dix 30 - Suivi de Nettoyage</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2098/2098402.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Internal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="bg-blur"></div>
+
+    <main class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>DIX30</h1>
+                <p>Suivi des tâches de nettoyage quotidiennes</p>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <span id="progressText">0% completado</span>
+            </div>
+        </header>
+
+        <nav class="floor-nav" id="floorNav">
+            <!-- Los botones de filtro se generarán dinámicamente -->
+        </nav>
+
+        <section class="tasks-section" id="tasksList">
+            <!-- Las tareas se renderizan aquí -->
+        </section>
+
+        <footer class="app-footer">
+            <button id="resetBtn" class="reset-btn">Resetear Progreso</button>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
