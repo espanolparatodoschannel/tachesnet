@@ -73,24 +73,24 @@ function initData() {
     
     if (saved) {
         blocksData = JSON.parse(saved);
+        // Sincronización estricta por índice para asegurar que los nombres nuevos SE APLIQUEN siempre
         blocksData.forEach((block, index) => {
-            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0].split(',')[0] === block.tasks[0].floor);
-            if (originalRef) {
-                block.title = originalRef.title;
-                // Actualizar textos de tareas por si cambiaron en structuredBlocks
+            if (structuredBlocks[index]) {
+                block.title = structuredBlocks[index].title;
+                block.color = structuredBlocks[index].color;
+                
+                // Actualizar textos de tareas por si cambiaron en el código
                 block.tasks.forEach((task, tIndex) => {
-                    const raw = originalRef.tasksRaw[tIndex];
+                    const raw = structuredBlocks[index].tasksRaw[tIndex];
                     if (raw) {
                         const firstComma = raw.indexOf(',');
                         const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
                         task.text = pureText;
+                        task.floor = raw.substring(0, firstComma).trim();
                         task.originalRaw = raw;
                     }
                 });
             }
-            block.tasks.forEach(task => {
-                task.text = task.text.replace(/-\s*Sall d'eau/gi, "").trim();
-            });
         });
     } else {
         blocksData = structuredBlocks.map((block, bIndex) => ({
