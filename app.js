@@ -37,7 +37,7 @@ const structuredBlocks = [
         "SS1,Plancher Sporting Life",
         "RC,Plancher et les tapis Sporting Life"
     ]},
-    { title: "Huston", color: "orange", tasksRaw: [
+    { title: "Huston Orange", color: "orange", tasksRaw: [
         "SS2,Plancher Huston",
         "SS1,Plancher Huston ",
         "RC,Plancher et les tapis Huston"
@@ -72,48 +72,16 @@ function initData() {
     
     if (saved) {
         blocksData = JSON.parse(saved);
-        
-        // Sincronizar bloques si el número de bloques en structuredBlocks cambió (ej. merge/del)
-        if (blocksData.length !== structuredBlocks.length) {
-            // Re-inicializamos para aplicar la nueva estructura si hay discrepancia de bloques
-            blocksData = structuredBlocks.map((block, bIndex) => ({
-                ...block,
-                uniqueId: `block-${Date.now()}-${bIndex}`,
-                id: bIndex,
-                isOpen: false,
-                tasks: block.tasksRaw.map((raw, tIndex) => {
-                    const firstComma = raw.indexOf(',');
-                    const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
-                    return {
-                        id: `${bIndex}-${tIndex}`,
-                        floor: raw.substring(0, firstComma).trim(),
-                        text: pureText,
-                        originalRaw: raw,
-                        completed: false
-                    };
-                })
-            }));
-        } else {
-            // Sincronizar contenidos específicos de tareas si el número de bloques es el mismo
-            blocksData.forEach((block, index) => {
-                const originalRef = structuredBlocks[index];
-                if (originalRef && (originalRef.tasksRaw.length !== block.tasks.length || originalRef.title !== block.title)) {
-                    block.title = originalRef.title;
-                    block.tasksRaw = originalRef.tasksRaw;
-                    block.tasks = originalRef.tasksRaw.map((raw, tIndex) => {
-                        const firstComma = raw.indexOf(',');
-                        const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
-                        return {
-                            id: `${index}-${tIndex}`,
-                            floor: raw.substring(0, firstComma).trim(),
-                            text: pureText,
-                            originalRaw: raw,
-                            completed: false
-                        };
-                    });
-                }
+        // Actualizar títulos si el usuario cambió el orden o el contenido
+        blocksData.forEach((block, index) => {
+            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0] === block.tasksRaw[0]);
+            if (originalRef) {
+                block.title = originalRef.title;
+            }
+            block.tasks.forEach(task => {
+                task.text = task.text.replace(/-\s*Sall d'eau/gi, "").trim();
             });
-        }
+        });
     } else {
         blocksData = structuredBlocks.map((block, bIndex) => ({
             ...block,
