@@ -38,12 +38,17 @@ const structuredBlocks = [
         "RC,Plancher et les tapis Sporting Life"
     ]},
     { title: "Huston", color: "orange", tasksRaw: [
-        "RC,Plancher et les tapis du Huston. - Sall d'eau"
+        "SS2,Plancher Huston",
+        "SS1,Plancher Huston ",
+        "RC,Plancher et les tapis Huston"
     ]},
     { title: "Jean-Coutu", color: "pink", tasksRaw: [
         "SS2,Plancher Jean-Coutu",
         "SS1,Plancher Jean-Coutu",
         "RC,Plancher et les tapis Jean-Coutu"
+    ]},
+    { title: "Huston", color: "grey", tasksRaw: [
+        "RC,Plancher et les tapis du Huston. - Sall d'eau"
     ]},
     { title: "Apple et Pottery Barn", color: "blue", tasksRaw: [
         "RC,Nettoyer et ranger la zamboni - Sall d'eau",
