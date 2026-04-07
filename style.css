@@ -30,12 +30,8 @@ body {
 .bg-blur {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('background.png');
-    background-size: cover;
-    background-position: center;
-    filter: blur(15px) brightness(0.6);
+    background: #0f172a; /* Color sólido elegante */
     z-index: -1;
-    transition: var(--transition);
 }
 
 .app-container {
@@ -70,12 +66,14 @@ body {
 
 .progress-container {
     margin-top: 1rem;
-    background: var(--glass-bg);
-    border-radius: 20px;
-    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    height: 24px;
     position: relative;
     overflow: hidden;
     border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
 }
 
 .progress-bar {
@@ -86,12 +84,15 @@ body {
 }
 
 #progressText {
-    display: block;
-    font-size: 0.75rem;
-    text-align: right;
-    margin-top: 4px;
-    color: var(--secondary);
-    font-weight: 600;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ffffff;
+    font-weight: 700;
+    z-index: 2;
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
 /* Navigation - Floor Filters */
