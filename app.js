@@ -50,7 +50,7 @@ const structuredBlocks = [
     { title: "Huston", color: "grey", tasksRaw: [
         "RC,Plancher et les tapis du Huston. - Sall d'eau"
     ]},
-    { title: "Apple et Pottery Barn", color: "blue", tasksRaw: [
+    { title: "Apple et Pottery", color: "blue", tasksRaw: [
         "RC,Nettoyer et ranger la zamboni - Sall d'eau",
         "RC,Plancher corridor (Apple et Pottery Barn) - Sall d'eau"
     ]}
@@ -152,7 +152,6 @@ function renderApp() {
         
         groupDiv.appendChild(header);
 
-        // Agregado del banner de completado debajo del encabezado
         if (isAllDone) {
             const completionBanner = document.createElement('div');
             completionBanner.className = 'completion-banner';
