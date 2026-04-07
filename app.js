@@ -170,11 +170,8 @@ function renderApp() {
 
 function initSortable() {
     Sortable.create(tasksListEl, {
-        animation: 250,
+        animation: 150,
         handle: '.drag-handle',
-        ghostClass: 'sortable-ghost',
-        chosenClass: 'sortable-chosen',
-        dragClass: 'sortable-drag',
         onEnd: function() {
             const newOrder = Array.from(tasksListEl.children).map(child => child.getAttribute('data-id'));
             const reorderedData = [];
