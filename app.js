@@ -1,6 +1,6 @@
 const structuredBlocks = [
     { title: "Clinique", color: "grey", tasksRaw: [
-        "RC,Plancher et les tapis de la clinique RC.",
+        "RC,Plancher et les tapis de la clinique",
         "2,Plancher de la clinique - Sall d'eau",
         "3,Plancher de la clinique",
         "4,Plancher de la clinique",
@@ -74,9 +74,19 @@ function initData() {
     if (saved) {
         blocksData = JSON.parse(saved);
         blocksData.forEach((block, index) => {
-            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0] === block.tasksRaw[0]);
+            const originalRef = structuredBlocks.find(b => b.tasksRaw.length === block.tasksRaw.length && b.tasksRaw[0].split(',')[0] === block.tasks[0].floor);
             if (originalRef) {
                 block.title = originalRef.title;
+                // Actualizar textos de tareas por si cambiaron en structuredBlocks
+                block.tasks.forEach((task, tIndex) => {
+                    const raw = originalRef.tasksRaw[tIndex];
+                    if (raw) {
+                        const firstComma = raw.indexOf(',');
+                        const pureText = raw.substring(firstComma + 1).replace(/-\s*Sall d'eau/gi, "").trim();
+                        task.text = pureText;
+                        task.originalRaw = raw;
+                    }
+                });
             }
             block.tasks.forEach(task => {
                 task.text = task.text.replace(/-\s*Sall d'eau/gi, "").trim();
