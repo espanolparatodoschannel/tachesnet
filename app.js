@@ -18,12 +18,12 @@ const structuredBlocks = [
         "SS1,Plancher",
         "RC,Plancher et les tapis - Sall d'eau"
     ]},
-    { title: "Jaune", color: "yellow", tasksRaw: [
+    { title: "Mon Coco", color: "yellow", tasksRaw: [
         "SS2,Plancher",
         "SS1,Plancher",
         "RC,Plancher et les tapis (faire los dos corridors). - Sall d'eau",
         "2,Plancher (seulement hacer los contours). - Sall d'eau",
-        "2,Plancher (zamboni au jaune RC).",
+        "2,Plancher (zamboni au Mon Coco RC).",
         "RC,Nettoyer et ranger la zamboni"
     ]},
     { title: "Siam", color: "orange", tasksRaw: [
